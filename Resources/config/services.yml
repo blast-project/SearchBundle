@@ -1,0 +1,13 @@
+services:
+    blast_search.hook.global_search_input:
+        parent: blast_utils.hooks.abstract_hook
+        class: Blast\Bundle\SearchBundle\Hook\GlobalSearchInput
+        tags:
+            - { name: blast.hook, hook: layout.global_search, template: BlastSearchBundle:Hook:globalSearchInput.html.twig }
+
+    blast_search.twig.display_search_result_extension:
+        class:  Blast\Bundle\SearchBundle\Twig\DisplaySearchResultExtension
+        calls:
+            - [setBlastSearchParameters, ['%blast_search%']]
+        tags:
+            - { name: twig.extension }

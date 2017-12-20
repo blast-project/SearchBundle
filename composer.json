@@ -1,0 +1,40 @@
+{
+    "name": "blast-project/search-bundle",
+    "type": "symfony-bundle",
+    "description": "A search system coupled with ElasticSearch",
+    "require": {
+        "php": "^7.1",
+        "symfony/symfony": "^3.3",
+        "sonata-project/block-bundle": "^3.9",
+        "friendsofsymfony/elastica-bundle": "^5.0",
+        "knplabs/knp-paginator-bundle": "^2.7"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^3.3",
+        "phpunit/phpunit": "^6.4"
+    },
+    "license": "LGPL-3.0",
+    "keywords": [
+        "blast",
+        "sonata",
+        "symfony",
+        "search"
+    ],
+    "homepage": "https://github.com/blast-project/SearchBundle",
+    "authors": [
+        {
+            "name": "Vivien FRASCA",
+            "email": "vivien.frasca@libre-informatique.fr"
+        },
+        {
+            "name": "Libre Informatique",
+            "homepage": "http://www.libre-informatique.fr/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Blast\\Bundle\\DashboardBundle\\": "."
+        }
+    },
+    "version": "dev-wip-platform"
+}

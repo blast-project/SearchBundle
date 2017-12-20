@@ -1,0 +1,12 @@
+{% set hasPagination = results.getPaginationData().numItemsPerPage * results.getPaginationData().current <= results.getPaginationData().totalCount %}
+
+{
+    "results": [
+        {% for result in results %}{{ displaySearchResult(result, true) }}{% if not loop.last %},{% endif %}{% endfor %}
+    ],
+    "more": {{ hasPagination ? 'true' : 'false' }},
+    "pagination": {
+        "perPage": {{ results.getPaginationData().numItemsPerPage }},
+        "totalResults": {{ results.getPaginationData().totalCount }}
+    }
+}

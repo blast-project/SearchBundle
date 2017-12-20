@@ -1,0 +1,7 @@
+blast_search_term:
+    path: /search
+    defaults: { _controller: BlastSearchBundle:Search:search }
+
+blast_search_term_ajax:
+    path: /ajax/search
+    defaults: { _controller: BlastSearchBundle:Search:ajaxSearch }

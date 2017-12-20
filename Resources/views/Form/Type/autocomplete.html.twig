@@ -1,0 +1,144 @@
+{% set ajaxSearchUrl = path('blast_search_term_ajax') %}
+
+<input type="text" id="{{ id }}_autocomplete_input" class="form-control" />
+
+<div id="{{ id }}_hidden_inputs_wrap">
+    {% if multiple -%}
+        {%- for idx, val in value if idx~'' != '_labels' -%}
+            <input type="hidden" name="{{ full_name }}[]" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
+        {%- endfor -%}
+    {% else -%}
+        <input type="hidden" name="{{ full_name }}" {%- if disabled %} disabled="disabled"{% endif %} value="{{ value[0]|default('') }}">
+    {% endif -%}
+</div>
+
+<script>
+    {% autoescape 'js' %}
+    var autocompleteInput = $('#{{ id }}_autocomplete_input');
+
+    autocompleteInput.select2({
+        minimumInputLength: {{ minimum_input_length }},
+        multiple: {{ multiple ? 'true' : 'false' }},
+        // allowClear: {{ required ? 'false' : 'true' }},
+        allowClear: true,
+        initSelection: function (element, callback) {
+            callback(element.val());
+        },
+        formatResult: function(data) {
+            return data['{{ ajax_item_label }}'];
+        },
+        formatSelection: function(data) {
+            return data['{{ ajax_item_label }}'];
+        },
+        ajax: {
+            url: '{{ ajaxSearchUrl }}',
+            data: function (term, page) {
+                var query = {
+                    q: term,
+                    index: '{{ elastic_index }}',
+                    type: '{{ elastic_type }}',
+                    page: page
+                }
+                return query;
+            },
+            results: function (data, page) {
+                page = page || 1;
+
+                var hasMore = (page * data.pagination.perPage) < data.pagination.totalResults;
+
+                return {
+                    results: data.results,
+                    more: hasMore
+                };
+            },
+        },
+        escapeMarkup: function(m) { return m; },
+        {% if allow_new_values %}
+        createSearchChoice: function(term, data) {
+            var foundItem = $(data)
+                .filter(function() {
+                    return this['{{ ajax_item_label }}'].localeCompare(term) === 0;
+                })
+                .length;
+
+            if (foundItem === 0 && data.length === 0) {
+                var choice = {
+                    id: term,
+                    text: term,
+                    new: true
+                };
+
+                choice['{{ ajax_item_label }}'] = term;
+                choice['{{ ajax_item_id }}'] = term;
+
+                return choice;
+            }
+        }
+        {% endif %}
+    });
+
+    autocompleteInput.on('change', function(e) {
+        var action = 'remove';
+        var data = null;
+
+        if (typeof e.added !== 'undefined') {
+            action = 'add';
+            data = e.added;
+        } else {
+            data = e.removed;
+        }
+
+        {% if multiple %}
+            $(this).data('syncMultipleData')(data, action);
+        {% else %}
+            $(this).data('syncData')(data, action);
+        {% endif %}
+    });
+
+    autocompleteInput
+        .data('syncMultipleData', function(data, action) {
+            if(!$.isArray(data)) {
+                data = [data];
+            }
+            $.each(data, function(i, item) {
+                if (action === 'add') {
+                    $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+item['{{ ajax_item_id }}']+'" />');
+                } else {
+                    $('#{{ id }}_hidden_inputs_wrap input:hidden[value="'+item['{{ ajax_item_id }}']+'"]').remove();
+                }
+            });
+        })
+        .data('syncData', function(data, action) {
+            $('#{{ id }}_hidden_inputs_wrap input:hidden').val(action === 'remove' ? '' : data['{{ ajax_item_id }}']);
+        })
+    ;
+
+    // Initialise the autocomplete
+    var data = [];
+
+    {%- if value is not empty -%}
+        data = {%- if multiple -%}[ {%- endif -%}
+        {%- if value is iterable -%}
+            {%- for idx, val  in value if idx~'' != '_labels' -%}
+                {%- if not loop.first -%}, {% endif -%}
+                {'{{ ajax_item_id }}': '{{ val }}', '{{ ajax_item_label }}':'{{ value['_labels'][idx] }}'}
+            {%- endfor -%}
+        {%- else -%}
+            {'{{ ajax_item_id }}': '{{ value }}', '{{ ajax_item_label }}':'{{ value }}'}
+        {%- endif -%}
+        {%- if multiple -%} ] {%- endif -%};
+    {% endif -%}
+
+    if (data.length === undefined || data.length > 0) {
+        {%- if multiple -%}
+            autocompleteInput
+                .select2('data', data)
+                .data('syncMultipleData')(data, 'add');
+        {%- else -%}
+            autocompleteInput
+                .select2('data', data)
+                .data('syncData')(data, 'add');
+        {%- endif -%}
+    }
+    {% endautoescape %}
+</script>

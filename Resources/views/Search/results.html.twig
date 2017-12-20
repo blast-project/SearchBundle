@@ -1,0 +1,28 @@
+{% extends 'BlastDecoratorBundle:Admin:layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+{{ blast_hook('layout.global_search') }}
+
+<hr />
+
+{% set resultsNumber = results.getTotalItemCount %}
+
+<div class="count">
+    {{ '{0} there are no results|{1} there is one result|]1,Inf[ there are %results% results'|transchoice(resultsNumber, { '%results%': resultsNumber }) }}
+</div>
+
+<div class="panel">
+
+    <ul class="list-group">
+        {% for result in results %}
+            {{ displaySearchResult(result) }}
+        {% endfor %}
+    </ul>
+
+    <div class="navigation">
+        {{ knp_pagination_render(results) }}
+    </div>
+
+</div>
+{% endblock %}

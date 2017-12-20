@@ -1,0 +1,17 @@
+{% block search_result_container %}
+<li class="list-group-item">
+    {% block search_result %}
+        <div class="pull-right">
+            {% block search_actions %}{% endblock %}
+        </div>
+        <h4 class="list-group-item-heading">
+            <a href="{%- block search_url %}#{% endblock -%}">
+                {% block search_title %}{% endblock %}
+            </a>
+        </h4>
+        <p class="list-group-item-text">
+            {% block search_main_text %}{% endblock %}
+        </p>
+    {% endblock %}
+</li>
+{% endblock %}
