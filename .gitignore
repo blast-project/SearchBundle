@@ -1,0 +1,11 @@
+/nbproject
+/.php_cs.cache
+/composer.phar
+/composer.lock
+/vendor/
+/Resources/doc/_build
+*~
+/bin/*
+!/bin/console
+!/bin/ci-scripts
+!/bin/git-script
