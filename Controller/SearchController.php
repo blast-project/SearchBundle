@@ -52,6 +52,7 @@ class SearchController extends BaseController
     {
         $response = new Response();
         $response->headers->add(['Content-Type' => 'application/json']);
+
         return $this->render('BlastSearchBundle:Search:results.json.twig', array('results' => $this->processSearchRequest($request)), $response);
     }
 }
