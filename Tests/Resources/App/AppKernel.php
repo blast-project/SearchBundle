@@ -35,11 +35,11 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir() . '/BlastDoctrineSessionBundle/cache/' . $this->getEnvironment();
+        return sys_get_temp_dir() . '/Blast/cache/' . $this->getEnvironment();
     }
 
     public function getLogDir()
     {
-        return sys_get_temp_dir() . '/BlastDoctrineSessionBundle/logs';
+        return sys_get_temp_dir() . '/Blast/logs';
     }
 }
