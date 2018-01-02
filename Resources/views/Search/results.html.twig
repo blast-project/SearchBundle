@@ -20,7 +20,13 @@
         {% endfor %}
     </ul>
 
-    <div class="navigation">
+    <div class="navigation text-center">
+        <hr />
+
+        <p>
+            {{ '{0} there are no results|{1} there is one result|]1,Inf[ there are %results% results'|transchoice(resultsNumber, { '%results%': resultsNumber }) }}
+        </p>
+
         {{ knp_pagination_render(results) }}
     </div>
 
