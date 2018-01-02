@@ -51,6 +51,9 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->scalarNode('results_per_page')
+                    ->defaultValue(20)
+                ->end()
             ->end()
         ;
 

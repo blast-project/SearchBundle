@@ -20,7 +20,7 @@ class SearchController extends BaseController
     {
         $searchTerm = $request->get('q') . '*';
         $page = $request->get('page', 1);
-        $perPage = 10;
+        $perPage = $this->container->getParameter('blast_search')['results_per_page'];
         $index = $request->get('index', 'global');
         $type = $request->get('type', null);
 
