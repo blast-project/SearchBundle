@@ -77,7 +77,7 @@ fos_elastica:
                         email: ~
                     persistence:
                         driver: orm
-                        model: "%sil_sonata_sylius_user.entity.sonata_user.class%"
+                        model: "%sil.model.user.class%"
                         listener: ~ # by default, listens to "insert", "update" and "delete"
 ```
 
