@@ -5,6 +5,8 @@ fos_elastica:
             port: 9200
     indexes:
         global:
+            use_alias: true
+            index_name: global
             finder: ~
 
 knp_paginator:
