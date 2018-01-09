@@ -29,7 +29,7 @@ class BlastSearchExtension extends Extension
 
         $container->setParameter('blast_search.elastic_search.hostname', $config['elastic_search']['hostname']);
         $container->setParameter('blast_search.elastic_search.port', $config['elastic_search']['port']);
-        $container->setParameter('blast_search.elastic_search.global_index_alias', $config['global_index_alias']);
+        $container->setParameter('blast_search.global_index_alias', $config['global_index_alias']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
