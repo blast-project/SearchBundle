@@ -65,8 +65,6 @@ fos_elastica:
             port: 9200
     indexes:
         global:
-            use_alias: true
-            index_name: %blast_search.global_index_name%
             types:
 
                 # Below is an example about how to map an entity to a search index
