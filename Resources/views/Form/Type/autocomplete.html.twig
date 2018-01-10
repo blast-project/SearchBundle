@@ -1,6 +1,6 @@
 {% set ajaxSearchUrl = path('blast_search_term_ajax') %}
 
-<input type="text" id="{{ id }}_autocomplete_input" class="form-control" />
+<input type="text" id="{{ id }}_autocomplete_input" {%- for attribute,value in attr %} {{attribute}}="{{value}}" {% endfor -%} />
 
 <div id="{{ id }}_hidden_inputs_wrap">
     {% if multiple -%}
