@@ -18,7 +18,7 @@ class SearchController extends BaseController
 {
     protected function processSearchRequest(Request $request)
     {
-        $searchTerm = $request->get('q');
+        $searchTerm = '*' . $request->get('q') . '*';
         $page = $request->get('page', 1);
         $perPage = $this->container->getParameter('blast_search')['results_per_page'];
         $defaultIndex = $this->container->getParameter('blast_search')['global_index_alias'];
