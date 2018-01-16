@@ -30,6 +30,7 @@ class AutocompleteType extends AbstractType
         $allOptions = [
             'elastic_index',
             'elastic_type',
+            'elastic_filter',
             'multiple',
             'required',
             'compound',
@@ -79,6 +80,7 @@ class AutocompleteType extends AbstractType
         $resolver->setDefault('template', 'BlastSearchbundle:Form/Type:autocomplete.html.twig');
         $resolver->setDefault('elastic_index', 'global');
         $resolver->setDefault('elastic_type', null);
+        $resolver->setDefault('elastic_filter', null);
         $resolver->setDefault('class', 'form-control');
         $resolver->setDefault('multiple', false);
         $resolver->setDefault('compound', function (Options $options) {

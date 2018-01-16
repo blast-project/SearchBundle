@@ -34,6 +34,7 @@
             data: function (term, page) {
                 var query = {
                     q: term,
+                    filter: '{{ elastic_filter }}',
                     index: '{{ elastic_index }}',
                     type: '{{ elastic_type }}',
                     page: page

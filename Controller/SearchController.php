@@ -13,6 +13,9 @@ namespace Blast\Bundle\SearchBundle\Controller;
 use Blast\Bundle\CoreBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\Match;
+use Elastica\Query\Terms;
 
 class SearchController extends BaseController
 {
@@ -37,11 +40,34 @@ class SearchController extends BaseController
 
         $finder = $this->container->get($finderName);
 
+        if ($filter = $request->get('filter', null)) {
+            $query = $this->processFilteredQuery($finder, $filter, $searchTerm);
+        } else {
+            $query = $searchTerm;
+        }
+
         $paginator = $this->container->get('knp_paginator');
-        $results = $finder->createPaginatorAdapter($searchTerm);
+        $results = $finder->createPaginatorAdapter($query);
         $pagination = $paginator->paginate($results, $page, $perPage);
 
         return $pagination;
+    }
+
+    protected function processFilteredQuery($finder, $filter, $searchTerm)
+    {
+        $filter = explode('|', $filter);
+
+        $boolQuery = new BoolQuery();
+
+        $termQuery = new Terms();
+        $termQuery->setTerms('*', [$searchTerm]);
+        $boolQuery->addShould($termQuery);
+
+        $filterQuery = new Match();
+        $filterQuery->setFieldQuery($filter[0], $filter[1]);
+        $boolQuery->addMust($filterQuery);
+
+        return $boolQuery;
     }
 
     public function searchAction(Request $request)
