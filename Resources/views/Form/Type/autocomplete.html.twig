@@ -19,7 +19,6 @@
     autocompleteInput.select2({
         minimumInputLength: {{ minimum_input_length }},
         multiple: {{ multiple ? 'true' : 'false' }},
-        // allowClear: {{ required ? 'false' : 'true' }},
         allowClear: true,
         initSelection: function (element, callback) {
             callback(element.val());

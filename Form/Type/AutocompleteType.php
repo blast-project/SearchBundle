@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AutocompleteType extends AbstractType
@@ -63,7 +64,7 @@ class AutocompleteType extends AbstractType
         }
         if ($options['multiple']) {
             $resizeListener = new ResizeFormListener(
-                HiddenType::class, array(), true, true, true
+                HiddenType::class, [], true, true, true
             );
 
             $builder->addEventSubscriber($resizeListener);
@@ -80,7 +81,9 @@ class AutocompleteType extends AbstractType
         $resolver->setDefault('elastic_type', null);
         $resolver->setDefault('class', 'form-control');
         $resolver->setDefault('multiple', false);
-        $resolver->setDefault('compound', false);
+        $resolver->setDefault('compound', function (Options $options) {
+            return $options['multiple'];
+        });
         $resolver->setDefault('minimum_input_length', 3);
         $resolver->setDefault('ajax_item_id', 'id');
         $resolver->setDefault('ajax_item_label', 'text');
