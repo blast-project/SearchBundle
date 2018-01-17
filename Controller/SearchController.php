@@ -20,7 +20,8 @@ class SearchController extends BaseController
 {
     protected function processSearchRequest(Request $request)
     {
-        $searchTerm = $request->get('q') . '*';
+        // $searchTerm = $request->get('q') . '*';
+        $searchTerm = $request->get('q');
         $page = $request->get('page', 1);
         $perPage = $this->container->getParameter('blast_search')['results_per_page'];
         $defaultIndex = $this->container->getParameter('blast_search')['global_index_alias'];
@@ -42,7 +43,11 @@ class SearchController extends BaseController
         if ($filter = $request->get('filter', null)) {
             $query = $this->processFilteredQuery($finder, $filter, $searchTerm);
         } else {
-            $query = $searchTerm;
+            // $query = $searchTerm;
+            $query = new BoolQuery();
+            $termQuery = new QueryString();
+            $termQuery->setParam('query', $searchTerm);
+            $query->addMust($termQuery);
         }
 
         $paginator = $this->container->get('knp_paginator');
