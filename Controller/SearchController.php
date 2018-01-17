@@ -14,8 +14,7 @@ use Blast\Bundle\CoreBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Elastica\Query\BoolQuery;
-use Elastica\Query\Match;
-use Elastica\Query\Terms;
+use Elastica\Query\QueryString;
 
 class SearchController extends BaseController
 {
@@ -59,13 +58,16 @@ class SearchController extends BaseController
 
         $boolQuery = new BoolQuery();
 
-        $termQuery = new Terms();
-        $termQuery->setTerms('*', [$searchTerm]);
-        $boolQuery->addShould($termQuery);
+        $searchQuery = new QueryString();
+        $searchQuery->setParam('query', $filter[1]);
+        $searchQuery->setParam('fields', array(
+            $filter[0],
+        ));
+        $boolQuery->addMust($searchQuery);
 
-        $filterQuery = new Match();
-        $filterQuery->setFieldQuery($filter[0], $filter[1]);
-        $boolQuery->addMust($filterQuery);
+        $termQuery = new QueryString();
+        $termQuery->setParam('query', $searchTerm);
+        $boolQuery->addMust($termQuery);
 
         return $boolQuery;
     }
