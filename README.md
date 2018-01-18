@@ -50,6 +50,7 @@ WantedBy=default.target
 ```
 
 ```bash
+sudo systemctl daemon-reload
 sudo systemctl enable elk
 ```
 
