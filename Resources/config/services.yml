@@ -11,3 +11,17 @@ services:
             - [setBlastSearchParameters, ['%blast_search%']]
         tags:
             - { name: twig.extension }
+
+    blast_search.result.results_populator:
+        class: Blast\Bundle\SearchBundle\Result\ResultsPopulator
+        calls:
+            - [setFosElasticaConfigManager, ['@fos_elastica.config_manager']]
+            - [setDoctrine, ['@doctrine']]
+
+    blast_search.search.global_search:
+        class: Blast\Bundle\SearchBundle\Search\GlobalSearch
+        calls:
+            - [setFosElasticaClient, ['@fos_elastica.client']]
+            - [setFosElasticaConfigManager, ['@fos_elastica.config_manager']]
+            - [setResultsPopulator, ['@blast_search.result.results_populator']]
+            - [setPaginator, ['@knp_paginator']]
