@@ -28,7 +28,7 @@ For development purposes only, you can use a complete Elastic Stack (previouly E
 For simplicity, you can use a Docker image for that stack : https://hub.docker.com/r/sebp/elk/
 
 ```bash
-docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -it --name elk sebp/elk:563
+docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -it --name elk sebp/elk:611
 ```
 
 _Note :_ Don't use ElasticSearch 6 because of a incompatibility between ES 6 and FOSElasticaBundle (see this issue https://github.com/FriendsOfSymfony/FOSElasticaBundle/issues/1267)
