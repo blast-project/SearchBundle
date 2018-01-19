@@ -37,13 +37,15 @@ You can launch this Docker image at stratup with a custom SystemD service (creat
 
 ```bash
 [Unit]
-Description=Start Elastic Stack at startup
+Description=Start ELK (Elastic search, Logstash and Kibana) at startup
 After=network.target
+Requires=docker.service
 
 [Service]
-ExecStart=/usr/bin/docker container start elk
-
-Type=forking
+Type=simple
+KillMode=none
+ExecStart=/usr/bin/docker start -a elk
+ExecStop=/usr/bin/docker stop -t 5 elk
 
 [Install]
 WantedBy=default.target
