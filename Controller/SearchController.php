@@ -29,14 +29,20 @@ class SearchController extends BaseController
             return $this->container->get('blast_search.search.global_search')->processGlobalSearch($searchTerm, $page, $perPage);
         }
 
-        $finder = $this->container->get('fos_elastica.finder.' . $index);
+        $finderName = sprintf(
+            'fos_elastica.finder.%s_%s_%s',
+            $this->container->getParameter('blast_search.global_index_alias'),
+            $this->container->getParameter('kernel.environment'),
+            $index
+        );
+        $finder = $this->container->get($finderName);
 
         if ($filter = $request->get('filter', null)) {
             $query = $this->processFilteredQuery($filter, $searchTerm);
         } else {
             $query = new BoolQuery();
             $termQuery = new QueryString();
-            $termQuery->setParam('query', $searchTerm);
+            $termQuery->setParam('query', $searchTerm . '*');
             $query->addMust($termQuery);
         }
 
