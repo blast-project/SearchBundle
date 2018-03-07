@@ -4,16 +4,16 @@
     "description": "A search system coupled with ElasticSearch",
     "require": {
         "php": "^7.1",
-        "symfony/symfony": "3.3.*",
+        "symfony/symfony": "^3.4",
         "sonata-project/block-bundle": "^3.9",
         "friendsofsymfony/elastica-bundle": "^5.0",
         "knplabs/knp-paginator-bundle": "^2.7"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "3.3.*",
+        "symfony/phpunit-bridge": "^3.4",
         "phpunit/phpunit": "^6.4"
     },
-    "license": "LGPL-3.0-only",
+    "license": ["LGPL-3.0-only"],
     "keywords": [
         "blast",
         "sonata",
@@ -38,6 +38,6 @@
     },
     "version": "dev-wip-platform",
     "config": {
-        "bin-dir": "bin/"
+        "bin-dir": "bin"
     }
 }
